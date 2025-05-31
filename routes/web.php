@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
+use App\Http\Controllers\PostController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -37,5 +39,12 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('status', 'verification-link-sent');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
+Route::middleware('auth')->group(function () {
+    Route::resource('posts', PostController::class);
+});
+
+Route::get('/test-modal', function () {
+    return view('test-modal');
+});
 
 require __DIR__.'/auth.php';
